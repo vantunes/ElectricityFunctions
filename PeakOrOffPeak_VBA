@@ -1,0 +1,85 @@
+Function PeakOrOffPeak(year As Integer, month As Integer, day As Integer, time As Date) As String
+    Dim IsSummer As Boolean
+    Dim peakStart As Date
+    Dim peakEnd As Date
+    Dim peakStart2 As Date
+    Dim peakEnd2 As Date
+    IsSummer = IsSummerTime(year, month, day)
+
+    Dim dayOfWeek As Integer
+    dayOfWeek = Weekday(DateSerial(year, month, day))
+   
+    If IsSummer Then
+        Select Case dayOfWeek
+            Case 2 To 6 ' Weekdays
+                peakStart = TimeValue("7:00:00")
+                peakEnd = TimeValue("23:59:59")
+                If time >= peakStart And time <= peakEnd Then
+                    PeakOrOffPeak = "Peak"
+                Else
+                    PeakOrOffPeak = "Off-Peak"
+                End If
+            Case 7 'Saturday
+                peakStart1 = TimeValue("09:00:00")
+                peakEnd1 = TimeValue("14:00:00")
+                peakStart2 = TimeValue("20:00:00")
+                peakEnd2 = TimeValue("22:00:00")
+                If (time >= peakStart1 And time <= peakEnd1) Or (time >= peakStart2 And time <= peakEnd2) Then
+                    PeakOrOffPeak = "Peak"
+                Else
+                    PeakOrOffPeak = "Off-Peak"
+                End If
+            Case 1 'Sunday
+                PeakOrOffPeak = "Off-Peak"
+        End Select
+    Else
+        Select Case dayOfWeek
+            Case 2 To 6 ' Weekdays
+                peakStart = TimeValue("7:00:00")
+                peakEnd = TimeValue("23:59:59")
+                If time >= peakStart And time <= peakEnd Then
+                    PeakOrOffPeak = "Peak"
+                Else
+                    PeakOrOffPeak = "Off-Peak"
+                End If
+            Case 7 'Saturday
+                peakStart1 = TimeValue("09:30:00")
+                peakEnd1 = TimeValue("13:00:00")
+                peakStart2 = TimeValue("18:30:00")
+                peakEnd2 = TimeValue("22:00:00")
+                 If (time >= peakStart1 And time <= peakEnd1) Or (time >= peakStart2 And time <= peakEnd2) Then
+                    PeakOrOffPeak = "Peak"
+                Else
+                    PeakOrOffPeak = "Off-Peak"
+                End If
+            Case 1 'Sunday
+                PeakOrOffPeak = "Off-Peak"
+        End Select
+    End If
+End Function
+
+Function LastSundayOfMarch(year As Integer) As Date
+    Dim lastDayOfMarch As Date
+    lastDayOfMarch = DateSerial(year, 3, 31)
+    LastSundayOfMarch = DateAdd("d", -Weekday(lastDayOfMarch, vbSunday), lastDayOfMarch)
+End Function
+
+Function LastSundayOfOctober(year As Integer) As Date
+    Dim lastDayOfOctober As Date
+    lastDayOfOctober = DateSerial(year, 10, 31)
+    LastSundayOfOctober = DateAdd("d", -Weekday(lastDayOfOctober, vbSunday), lastDayOfOctober)
+End Function
+
+Function IsSummerTime(year As Integer, month As Integer, day As Integer) As Boolean
+    Dim currentDate As Date
+    currentDate = DateSerial(year, month, day)
+    Dim startSummer As Date
+    startSummer = LastSundayOfMarch(year)
+    Dim endSummer As Date
+    endSummer = LastSundayOfOctober(year) + 1
+    If currentDate >= startSummer And currentDate < endSummer Then
+        IsSummerTime = True
+    Else
+        IsSummerTime = False
+    End If
+End Function
