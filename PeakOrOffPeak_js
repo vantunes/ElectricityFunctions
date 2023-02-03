@@ -1,0 +1,92 @@
+function LastSundayOfOctober(year) {
+  var lastDayOfOctober = new Date(year, 9, 31);
+  var lastSundayOfOctober = new Date(year, 9, 31 - lastDayOfOctober.getUTCDay());
+  return lastSundayOfOctober;
+}
+
+function LastSundayOfMarch(year) {
+    var lastDayOfMarch = new Date(year, 2, 31);
+    var lastSundayOfMarch = new Date(year, 2, 31 - lastDayOfMarch.getUTCDay());
+    return lastSundayOfMarch;
+}
+
+function IsSummerTime(year, month, day) {
+  var currentDate = new Date(year, month-1, day);
+  var startSummer = LastSundayOfMarch(year);
+  var endSummer = LastSundayOfOctober(year);
+  endSummer.setDate(endSummer.getDate() + 1);
+  
+  if (currentDate >= startSummer && currentDate < endSummer) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function PeakOrOffPeak(year, month, day, time) {
+  var isSummer = IsSummerTime(year, month, day);
+  var peakStart, peakEnd, peakStart1, peakEnd1, peakStart2, peakEnd2;
+  var dayOfWeek = new Date(year, month-1, day).getUTCDay();
+  if (dayOfWeek === 0) dayOfWeek = 7;
+  var timeArr = time.split(":");
+  var currentTime = new Date(year, month-1, day, timeArr[0], timeArr[1], 0);
+  
+  if (isSummer) {
+    switch (dayOfWeek) {
+      case 2: 
+      case 3:
+      case 4:
+      case 5:
+      case 6: // Weekdays
+        peakStart = new Date(year, month-1, day, 7, 0, 0);
+        peakEnd = new Date(year, month-1, day, 23, 59, 59);
+        if (currentTime >= peakStart && currentTime <= peakEnd) {
+          return "Peak";
+        } else {
+          return "Off-Peak";
+        }
+        break;
+      case 7: //Saturday
+        peakStart1 = new Date(year, month-1, day, 9, 0, 0);
+        peakEnd1 = new Date(year, month-1, day, 14, 0, 0);
+        peakStart2 = new Date(year, month-1, day, 20, 0, 0);
+        peakEnd2 = new Date(year, month-1, day, 22, 0, 0);
+        if ((currentTime >= peakStart1 && currentTime <= peakEnd1) || (currentTime >= peakStart2 && currentTime <= peakEnd2)) {
+          return "Peak";
+        } else {
+          return "Off-Peak";
+        }
+        break;
+      case 1: //Sunday
+        return "Off-Peak";
+    }
+  } else {
+    switch (dayOfWeek) {
+      case 2: 
+      case 3:
+      case 4:
+      case 5:
+      case 6: // Weekdays
+        peakStart = new Date(year, month-1, day, 7, 0, 0);
+        peakEnd = new Date(year, month-1, day, 23, 59, 59);
+        if (currentTime >= peakStart && currentTime <= peakEnd) {
+          return "Peak";
+        } else {
+          return "Off-Peak";
+        }
+        break;
+      case 7: //Saturday
+        peakStart1 = new Date(year, month-1, day, 9, 30, 0);
+        peakEnd1 = new Date(year, month-1, day, 13, 0, 0);
+        peakStart2 = new Date(year, month-1, day, 18, 30, 0);
+        peakEnd2 = new Date(year, month-1, day, 22, 0, 0);
+        if ((currentTime >= peakStart1 && currentTime <= peakEnd1) || (currentTime >= peakStart2 && currentTime <= peakEnd2)) {
+          return "Peak";
+        } else {
+          return "Off-Peak";
+        }
+        break;
+      case 1: //Sunday
+        return "Off-Peak";
+    }
+  }
+}
