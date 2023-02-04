@@ -1,0 +1,55 @@
+from datetime import date, timedelta
+import calendar
+
+def LastSundayOfMarch(year):
+    last_day_of_march = date(year, 3, 31)
+    last_sunday_of_march = last_day_of_march - timedelta(days=calendar.weekday(year, 3, 31))
+    return last_sunday_of_march
+
+def LastSundayOfOctober(year):
+    last_day_of_october = date(year, 10, 31)
+    last_sunday_of_october = last_day_of_october - timedelta(days=calendar.weekday(year, 10, 31))
+    return last_sunday_of_october
+
+def IsSummerTime(year, month, day):
+    current_date = date(year, month, day)
+    start_summer = LastSundayOfMarch(year)
+    end_summer = LastSundayOfOctober(year) + timedelta(days=1)
+    return current_date >= start_summer and current_date < end_summer
+    
+def PeakOrOffPeak(year, month, day, time):
+    is_summer = IsSummerTime(year, month, day)
+    day_of_week = calendar.weekday(year, month, day)
+
+    if is_summer:
+        if 2 <= day_of_week <= 6:
+            peak_start = time.replace(hour=7, minute=0, second=0)
+            peak_end = time.replace(hour=23, minute=59, second=59)
+            return "Peak" if peak_start <= time <= peak_end else "Off-Peak"
+        elif day_of_week == 6:
+            peak_start_1 = time.replace(hour=9, minute=0, second=0)
+            peak_end_1 = time.replace(hour=14, minute=0, second=0)
+            peak_start_2 = time.replace(hour=20, minute=0, second=0)
+            peak_end_2 = time.replace(hour=22, minute=0, second=0)
+            if (peak_start_1 <= time <= peak_end_1) or (peak_start_2 <= time <= peak_end_2):
+                return "Peak"
+            else:
+                return "Off-Peak"
+        else:
+            return "Off-Peak"
+    else:
+        if 2 <= day_of_week <= 6:
+            peak_start = time.replace(hour=7, minute=0, second=0)
+            peak_end = time.replace(hour=23, minute=59, second=59)
+            return "Peak" if peak_start <= time <= peak_end else "Off-Peak"
+        elif day_of_week == 6:
+            peak_start_1 = time.replace(hour=9, minute=30, second=0)
+            peak_end_1 = time.replace(hour=13, minute=0, second=0)
+            peak_start_2 = time.replace(hour=18, minute=30, second=0)
+            peak_end_2 = time.replace(hour=22, minute=0, second=0)
+if (peak_start_1 <= time <= peak_end_1) or (peak_start_2 <= time <= peak_end_2):
+return "Peak"
+else:
+return "Off-Peak"
+else:
+return "Off-Peak"
